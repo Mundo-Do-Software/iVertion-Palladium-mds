@@ -16,7 +16,26 @@ namespace iVertion.Domain.Entities
                                  DateTime expirationDate,
                                  bool active)
         {
-            ValidationDomain(role, targetUserId, startDate, expirationDate);
+            ValidationDomain(role, 
+                             targetUserId, 
+                             startDate, 
+                             expirationDate);
+            Active = active;
+        }
+        public TemporaryUserRole(int id,
+                                 string role,
+                                 string targetUserId, 
+                                 DateTime startDate, 
+                                 DateTime expirationDate,
+                                 bool active)
+        {
+            DomainExceptionValidation.When(id < 0,
+                                           "Invalid Id, must be up to zero."); 
+            ValidationDomain(role, 
+                             targetUserId, 
+                             startDate, 
+                             expirationDate);
+            Id = id;
             Active = active;
         }
 
