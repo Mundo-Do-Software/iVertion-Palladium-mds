@@ -38,6 +38,18 @@ namespace iVertion.Domain.Entities
             Id = id;
             Active = active;
         }
+        public void Update(string role,
+                           string targetUserId, 
+                           DateTime startDate, 
+                           DateTime expirationDate,
+                           bool active)
+        {
+            ValidationDomain(role, 
+                             targetUserId, 
+                             startDate, 
+                             expirationDate);
+            Active = active;
+        }
 
         private void ValidationDomain(string? role,
                                       string? targetUserId,
