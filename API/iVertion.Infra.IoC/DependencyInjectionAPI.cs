@@ -43,6 +43,7 @@ namespace iVertion.Infra.IoC
             services.AddScoped<IArticleHistoryRepository, ArticleHistoryRepository>();
             
             // Users Profiles and Roles Repositories
+            services.AddScoped<ITemporaryUserRoleRepository, TemporaryUserRoleRepository>();
             services.AddScoped<IAdditionalUserRoleRepository, AdditionalUserRoleRepository>();
             services.AddScoped<IUserProfileRepository, UserProfileRepository>();
             services.AddScoped<IRoleProfileRepository, RoleProfileRepository>();
