@@ -26,6 +26,14 @@ namespace iVertion.Infra.Data.Repositories
             if(!String.IsNullOrEmpty(request.TargetUserId))
                 temporaryUserRoles = temporaryUserRoles.Where(c => c.TargetUserId == request.TargetUserId);
 
+            // Time interval.
+
+            if(request.StartDate != null)
+                temporaryUserRoles = temporaryUserRoles.Where(c => c.StartDate >= request.StartDate);
+
+            if(request.ExpirtionDate != null)
+                temporaryUserRoles = temporaryUserRoles.Where(c => c.ExpirationDate >= request.ExpirtionDate);
+
             // UserId
             if (!String.IsNullOrEmpty(request.UserId))
                 temporaryUserRoles = temporaryUserRoles.Where(p => p.UserId.Contains(request.UserId));
