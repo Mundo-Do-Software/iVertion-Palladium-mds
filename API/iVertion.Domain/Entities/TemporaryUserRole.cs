@@ -7,8 +7,8 @@ namespace iVertion.Domain.Entities
     {
         public string? Role { get; private set; }
         public string? TargetUserId { get; private set; }
-        public DateTime? StartDate { get; private set; }
-        public DateTime? ExpirationDate { get; private set; }
+        public DateTime StartDate { get; private set; }
+        public DateTime ExpirationDate { get; private set; }
 
         public TemporaryUserRole(string role,
                                  string targetUserId, 
@@ -53,8 +53,8 @@ namespace iVertion.Domain.Entities
 
         private void ValidationDomain(string? role,
                                       string? targetUserId,
-                                      DateTime? startDate,
-                                      DateTime?expirationDate)
+                                      DateTime startDate,
+                                      DateTime expirationDate)
         {
             DomainExceptionValidation.When(String.IsNullOrEmpty(role),
                                            "Invalid Role, must not be null or empty.");
