@@ -7,10 +7,10 @@ namespace iVertion.Application.Interfaces
 {
     public interface ITemporaryUserRoleService
     {
-         Task<ResultService<PagedBaseResponseDTO<TemporaryUserRoleDTO>>> GetTemporaryUserRolesAsync(TemporaryUserRoleFilterDb addtionalUserRoleFilterDb);
+         Task<ResultService<PagedBaseResponseDTO<TemporaryUserRoleDTO>>> GetTemporaryUserRolesAsync(TemporaryUserRoleFilterDb temporaryUserRoleFilterDb);
          Task<ResultService<TemporaryUserRoleDTO>> GetTemporaryUserRoleByIdAsync(int id);
-         Task CreateTemporaryUserRoleAsync(TemporaryUserRoleDTO addtionalUserRoleDto);
-         Task UpdateTemporaryUserRoleAsync(TemporaryUserRoleDTO addtionalUserRoleDto);
+         Task CreateTemporaryUserRoleAsync(TemporaryUserRoleDTO temporaryUserRoleDto);
+         Task UpdateTemporaryUserRoleAsync(TemporaryUserRoleDTO temporaryUserRoleDto);
          Task RemoveTemporaryUserRoleAsync(int id);
     }
 }
