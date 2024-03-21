@@ -1,10 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace iVertion.WebApi.Models
 {
+    /// <summary>
+    /// This is the model for adding a new temporary user role.
+    /// </summary>
     public class TemporaryUserRoleModel
     {
         /// <summary>
