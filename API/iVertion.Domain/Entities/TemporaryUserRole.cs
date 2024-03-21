@@ -64,12 +64,8 @@ namespace iVertion.Domain.Entities
                                            "Invalid Role, too long, max 25 characters.");
             DomainExceptionValidation.When(String.IsNullOrEmpty(targetUserId),
                                            "Invalid Target User Id, must not be null or empty.");
-            DomainExceptionValidation.When(startDate != null,
-                                           "Invalid Start Date, must not be null");
             DomainExceptionValidation.When(startDate >= DateTime.Now,
                                            "Invalid Start Date, must be greater than the current date.");
-            DomainExceptionValidation.When(expirationDate != null,
-                                           "Invalid Expiration Date, must not be null");
             DomainExceptionValidation.When(expirationDate > startDate,
                                            "Invalid Expiration Date, must be greater than the Start Date.");
 
