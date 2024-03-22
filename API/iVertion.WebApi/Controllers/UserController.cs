@@ -1,16 +1,9 @@
-using System.Net;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+
 using iVertion.Domain.Account;
 using iVertion.Infra.Data.Identity;
 using iVertion.WebApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity;
 using iVertion.Application.Interfaces;
 using iVertion.Domain.FiltersDb;
@@ -31,6 +24,7 @@ namespace iVertion.WebApi.Controllers
         private readonly IUserProfileService _userProfileService;
         private readonly IRoleProfileService _roleProfileService;
         private readonly IAdditionalUserRoleService _additionalUserRoleService;
+        private readonly ITemporaryUserRoleService _temporaryUserRoleService;
         /// <summary>
         /// Constructor
         /// </summary>
@@ -40,12 +34,15 @@ namespace iVertion.WebApi.Controllers
         /// <param name="userProfileService"></param>
         /// <param name="roleProfileService"></param>
         /// <param name="additionalUserRoleService"></param>
+        /// <param name="temporaryUserRoleService"></param>
         public UserController(IAuthenticate authentication,
                               IUserInterface<ApplicationUser> userService,
                               IRoleInterface<IdentityRole> roleService,
-                               IUserProfileService userProfileService,
-                               IRoleProfileService roleProfileService,
-                               IAdditionalUserRoleService additionalUserRoleService)
+                              IUserProfileService userProfileService,
+                              IRoleProfileService roleProfileService,
+                              IAdditionalUserRoleService additionalUserRoleService,
+                              ITemporaryUserRoleService temporaryUserRoleService
+                               )
         {
             _authentication = authentication ??
                 throw new ArgumentNullException(nameof(authentication));
@@ -59,6 +56,8 @@ namespace iVertion.WebApi.Controllers
                 throw new ArgumentNullException(nameof(roleProfileService));
             _additionalUserRoleService = additionalUserRoleService ??
                 throw new ArgumentNullException(nameof(additionalUserRoleService));
+            _temporaryUserRoleService = temporaryUserRoleService ??
+                throw new ArgumentNullException(nameof(temporaryUserRoleService));
         }
         /// <summary>
         /// Returns a list of users.
