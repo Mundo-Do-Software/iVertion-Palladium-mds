@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using iVertion.Application.Interfaces;
 using iVertion.Domain.FiltersDb;
 using iVertion.Application.DTOs;
+using System.Xml.Schema;
 
 namespace iVertion.WebApi.Controllers
 {
@@ -426,6 +427,122 @@ namespace iVertion.WebApi.Controllers
                 return BadRequest("UserName is not be null or empty");
             }
             return BadRequest("Role is not be null or empty");
+        }
+        /// <summary>
+        /// Adds a new temporary user role.
+        /// </summary>
+        /// <param name="temporaryUserRoleModel"></param>
+        /// <returns></returns>
+        [HttpPost("TemporaryUserRole")]
+        [Authorize(Roles = "AddToRole")]
+        public async Task<ActionResult> AddTemporaryUserRoleAsync([FromBody] TemporaryUserRoleModel temporaryUserRoleModel)
+        {
+            if (!String.IsNullOrEmpty(temporaryUserRoleModel.Role)){
+                if (!String.IsNullOrEmpty(temporaryUserRoleModel.UserName)){
+                    if (temporaryUserRoleModel.StartDate >= DateTime.Now){
+                        if (temporaryUserRoleModel.ExpirationDate > temporaryUserRoleModel.StartDate){
+                            var roleExists = await _roleService.RoleExistsAsync(temporaryUserRoleModel.Role);
+                            if (roleExists){
+                                var targetUser = await _userService.GetUserByNameAsync(temporaryUserRoleModel.UserName);
+                                try
+                                {
+
+                                    var targetUserId = targetUser.Id;
+                                    var userProfileId = targetUser.UserProfileId;
+                                    var userProfile = await _userProfileService.GetUserProfileByIdAsync(userProfileId);
+                                    if (userProfile.Data == null)
+                                        return NotFound("This Id does not correspond to an existing User Profile.");
+                                    if (userProfile.IsSuccess){
+                                        var roleProfileFilterDb = new RoleProfileFilterDb(){
+                                                                        UserProfileId = userProfileId,
+                                                                        PageSize = 10000, 
+                                                                        OrderByProperty = "Id", 
+                                                                        Page=1, 
+                                                                        Role= temporaryUserRoleModel.Role, 
+                                                                        UserId=null
+                                                                        };
+
+                                        var rolesProfiles = await _roleProfileService.GetRoleProfilesAsync(roleProfileFilterDb);
+                                        var roleModel = new List<string>();
+                                        var roleProfileId = 0;
+                                        foreach(var role in rolesProfiles.Data.Data){
+                                            roleModel.Add(role.Role);
+                                            roleProfileId = role.Id;
+                                        }
+                                        if (!roleModel.Contains(temporaryUserRoleModel.Role)){
+                                            var additionalUserRolesFilterDb = new AdditionalUserRoleFilterDb(){
+                                                TargetUserId = targetUserId,
+                                                PageSize = 10000, 
+                                                OrderByProperty = "Id", 
+                                                Page=1, 
+                                                Role=temporaryUserRoleModel.Role, 
+                                                UserId=null
+                                                };
+                                            var additionalUserRoles = await _additionalUserRoleService.GetAdditionalUserRolesAsync(additionalUserRolesFilterDb);
+                                            var additionalRoles = new List<string>();
+                                            var additionalUserRoleId = 0;
+                                            foreach(var role in additionalUserRoles.Data.Data){
+                                                additionalRoles.Add(role.Role);
+                                                additionalUserRoleId = role.Id;
+                                            }
+                                            if (!additionalRoles.Contains(temporaryUserRoleModel.Role)){
+
+                                                var temporaryUserRoleFilterDb = new TemporaryUserRoleFilterDb(){
+                                                    TargetUserId = targetUserId,
+                                                    PageSize = 10000, 
+                                                    OrderByProperty = "Id", 
+                                                    Page=1, 
+                                                    Role=temporaryUserRoleModel.Role, 
+                                                    UserId=null,
+                                                    StartDate=null,
+                                                    ExpirationDate=DateTime.Now
+                                                };
+                                                var temporaryUserRoles = await _temporaryUserRoleService.GetTemporaryUserRolesAsync(temporaryUserRoleFilterDb);
+                                                var temporaryRoles = new List<string>();
+                                                foreach(var role in temporaryUserRoles.Data.Data){
+                                                    temporaryRoles.Add(role.Role);
+                                                }
+                                                if (!temporaryRoles.Contains(temporaryUserRoleModel.Role)){
+
+                                                    // Action
+                                                    var temporaryUserRoleDto = new TemporaryUserRoleDTO();
+                                                    var dateNow = DateTime.Now;
+                                                    temporaryUserRoleDto.Active = true;
+                                                    temporaryUserRoleDto.Role = temporaryUserRoleModel.Role;
+                                                    temporaryUserRoleDto.TargetUserId = targetUserId;
+                                                    temporaryUserRoleDto.StartDate = temporaryUserRoleModel.StartDate;
+                                                    temporaryUserRoleDto.ExpirationDate = temporaryUserRoleModel.ExpirationDate;
+                                                    temporaryUserRoleDto.CreatedAt = dateNow;
+                                                    temporaryUserRoleDto.UpdatedAt = dateNow;
+
+                                                    await _temporaryUserRoleService.CreateTemporaryUserRoleAsync(temporaryUserRoleDto);
+
+                                                    return Ok($@"The {temporaryUserRoleModel.Role} has been successfully assigned to the {targetUser.FullName}.");
+                                                    // End Action
+                                                }
+
+                                                return Conflict($@"The {temporaryUserRoleModel.Role} already exists in this {targetUser.FullName}'s temporary roles.");
+                                            }
+                                            return Conflict($@"The {temporaryUserRoleModel.Role} already exists in this {targetUser.FullName}'s additional roles.");
+                                        }
+                                        return Conflict($@"The {temporaryUserRoleModel.Role} already exists in this {targetUser.FullName}'s User Profile.");
+                                    }
+                                    return BadRequest(userProfile);
+                                } 
+                                catch
+                                {
+                                    return NotFound($@"The specified user '{temporaryUserRoleModel.UserName}', does not exist in the system!");
+                                }
+                            }
+                            return NotFound($@"The specified role '{temporaryUserRoleModel.Role}', does not exist in the system!");
+                        }
+                        return BadRequest("The expiration date must be greater than the start date.");
+                    }
+                    return BadRequest("The start date cannot be retroactive.");
+                }
+                return BadRequest("Username cannot be null or empty.");
+            }
+            return BadRequest("Role cannot be null or empty.");
         }
         /// <summary>
         /// Returns a list of roles.
