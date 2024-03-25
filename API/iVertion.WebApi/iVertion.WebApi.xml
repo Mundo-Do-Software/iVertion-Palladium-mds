@@ -86,7 +86,7 @@
             User
             </summary>
         </member>
-        <member name="M:iVertion.WebApi.Controllers.UserController.#ctor(iVertion.Domain.Account.IAuthenticate,iVertion.Domain.Account.IUserInterface{iVertion.Infra.Data.Identity.ApplicationUser},iVertion.Domain.Account.IRoleInterface{Microsoft.AspNetCore.Identity.IdentityRole},iVertion.Application.Interfaces.IUserProfileService,iVertion.Application.Interfaces.IRoleProfileService,iVertion.Application.Interfaces.IAdditionalUserRoleService)">
+        <member name="M:iVertion.WebApi.Controllers.UserController.#ctor(iVertion.Domain.Account.IAuthenticate,iVertion.Domain.Account.IUserInterface{iVertion.Infra.Data.Identity.ApplicationUser},iVertion.Domain.Account.IRoleInterface{Microsoft.AspNetCore.Identity.IdentityRole},iVertion.Application.Interfaces.IUserProfileService,iVertion.Application.Interfaces.IRoleProfileService,iVertion.Application.Interfaces.IAdditionalUserRoleService,iVertion.Application.Interfaces.ITemporaryUserRoleService)">
             <summary>
             Constructor
             </summary>
@@ -96,6 +96,7 @@
             <param name="userProfileService"></param>
             <param name="roleProfileService"></param>
             <param name="additionalUserRoleService"></param>
+            <param name="temporaryUserRoleService"></param>
         </member>
         <member name="M:iVertion.WebApi.Controllers.UserController.Get">
             <summary>
@@ -171,6 +172,13 @@
             Remove an additional role to a user beyond the role profile they belong to.
             </summary>
             <param name="additionalUserRoleModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:iVertion.WebApi.Controllers.UserController.AddTemporaryUserRoleAsync(iVertion.WebApi.Models.TemporaryUserRoleModel)">
+            <summary>
+            Adds a new temporary user role.
+            </summary>
+            <param name="temporaryUserRoleModel"></param>
             <returns></returns>
         </member>
         <member name="M:iVertion.WebApi.Controllers.UserController.GetRolesAsync">
@@ -264,6 +272,33 @@
             <summary>
             An existing username on Identity.
             </summary>
+        </member>
+        <member name="T:iVertion.WebApi.Models.TemporaryUserRoleModel">
+            <summary>
+            This is the model for adding a new temporary user role.
+            </summary>
+        </member>
+        <member name="P:iVertion.WebApi.Models.TemporaryUserRoleModel.Role">
+            <summary>
+            A role registered in the Identity roles.
+            </summary>
+        </member>
+        <member name="P:iVertion.WebApi.Models.TemporaryUserRoleModel.UserName">
+            <summary>
+            An existing username on Identity.
+            </summary>
+        </member>
+        <member name="P:iVertion.WebApi.Models.TemporaryUserRoleModel.StartDate">
+            <summary>
+            The start date of the temporary user role.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:iVertion.WebApi.Models.TemporaryUserRoleModel.ExpirationDate">
+            <summary>
+            The end date of the temporary user role.
+            </summary>
+            <value></value>
         </member>
     </members>
 </doc>
