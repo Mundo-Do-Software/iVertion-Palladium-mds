@@ -181,6 +181,13 @@
             <param name="temporaryUserRoleModel"></param>
             <returns></returns>
         </member>
+        <member name="M:iVertion.WebApi.Controllers.UserController.RemoveTemporaryUserRoleAsync(iVertion.WebApi.Models.RemoveTemporaryUserRoleModel)">
+            <summary>
+            Removes a temporary role from a user.
+            </summary>
+            <param name="removeTemporaryUserRoleModel"></param>
+            <returns></returns>
+        </member>
         <member name="M:iVertion.WebApi.Controllers.UserController.GetRolesAsync">
             <summary>
             Returns a list of roles.
@@ -254,6 +261,21 @@
             </summary>
         </member>
         <member name="P:iVertion.WebApi.Models.AdditionalUserRoleModel.UserName">
+            <summary>
+            An existing username on Identity.
+            </summary>
+        </member>
+        <member name="T:iVertion.WebApi.Models.RemoveTemporaryUserRoleModel">
+            <summary>
+            This model is the body of users' requests for temporary roles.
+            </summary>
+        </member>
+        <member name="P:iVertion.WebApi.Models.RemoveTemporaryUserRoleModel.Role">
+            <summary>
+            A role registered in the Identity roles.
+            </summary>
+        </member>
+        <member name="P:iVertion.WebApi.Models.RemoveTemporaryUserRoleModel.UserName">
             <summary>
             An existing username on Identity.
             </summary>
