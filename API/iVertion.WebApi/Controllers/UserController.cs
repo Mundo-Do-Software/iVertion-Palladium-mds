@@ -531,9 +531,10 @@ namespace iVertion.WebApi.Controllers
                                     }
                                     return BadRequest(userProfile);
                                 } 
-                                catch
+                                catch (Exception e)
                                 {
-                                    return NotFound($@"The specified user '{temporaryUserRoleModel.UserName}', does not exist in the system!");
+                                    return BadRequest($@"An error occurred in the request. - {e.Message}");
+                                    // return NotFound($@"The specified user '{temporaryUserRoleModel.UserName}', does not exist in the system!");
                                 }
                             }
                             return NotFound($@"The specified role '{temporaryUserRoleModel.Role}', does not exist in the system!");
@@ -541,6 +542,63 @@ namespace iVertion.WebApi.Controllers
                         return BadRequest("The expiration date must be greater than the start date.");
                     }
                     return BadRequest("The start date cannot be retroactive.");
+                }
+                return BadRequest("Username cannot be null or empty.");
+            }
+            return BadRequest("Role cannot be null or empty.");
+        }
+        /// <summary>
+        /// Removes a temporary role from a user.
+        /// </summary>
+        /// <param name="removeTemporaryUserRoleModel"></param>
+        /// <returns></returns>
+        [HttpDelete("TemporaryUserRole")]
+        [Authorize(Roles = "RemoveFromRole")]
+        public async Task<ActionResult> RemoveTemporaryUserRoleAsync([FromBody] RemoveTemporaryUserRoleModel removeTemporaryUserRoleModel){
+            if (!String.IsNullOrEmpty(removeTemporaryUserRoleModel.Role)) {
+                if (!String.IsNullOrEmpty(removeTemporaryUserRoleModel.UserName)){
+                    var roleExists = await _roleService.RoleExistsAsync(removeTemporaryUserRoleModel.Role);
+                    if (roleExists) {
+                        var targetUser = await _userService.GetUserByNameAsync(removeTemporaryUserRoleModel.UserName);
+                        try
+                        {
+                            var targetUserId = targetUser.Id;
+                            var temporaryUserRoleFilterDb = new TemporaryUserRoleFilterDb(){
+                                TargetUserId = targetUserId,
+                                PageSize = 10000, 
+                                OrderByProperty = "Id", 
+                                Page=1, 
+                                Role=removeTemporaryUserRoleModel.Role, 
+                                UserId=null,
+                                StartDate=null,
+                                ExpirationDate=DateTime.Now
+                            };
+                            var temporaryUserRoles = await _temporaryUserRoleService.GetTemporaryUserRolesAsync(temporaryUserRoleFilterDb);
+                            var temporaryRoles = new List<string>();
+                            var temporaryRoleId = 0;
+                            foreach(var role in temporaryUserRoles.Data.Data){
+                                temporaryRoles.Add(role.Role);
+                                temporaryRoleId = role.Id;
+                            }
+                            if (temporaryRoles.Contains(removeTemporaryUserRoleModel.Role)){
+                                try
+                                {
+                                    await _temporaryUserRoleService.RemoveTemporaryUserRoleAsync(temporaryRoleId);
+                                    return Ok($@"The '{removeTemporaryUserRoleModel.Role}' has been successfully removed from the {targetUser.FullName}.");
+                                }
+                                catch
+                                {
+                                    return BadRequest($@"An error occurred while removing the temporary role '{removeTemporaryUserRoleModel.Role}' for {targetUser.FullName}.");
+                                }
+                            }
+                            return Conflict($@"The {removeTemporaryUserRoleModel.Role} not exists in this {targetUser.FullName}'s temporary roles.");
+                        }
+                        catch
+                        {
+                            return NotFound($@"The specified user '{removeTemporaryUserRoleModel.UserName}', does not exist in the system!");
+                        }
+                    }
+                    return NotFound($@"The specified role '{removeTemporaryUserRoleModel.Role}', does not exist in the system!");
                 }
                 return BadRequest("Username cannot be null or empty.");
             }
