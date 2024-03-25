@@ -507,6 +507,8 @@ namespace iVertion.WebApi.Controllers
                                                     // Action
                                                     var temporaryUserRoleDto = new TemporaryUserRoleDTO();
                                                     var dateNow = DateTime.Now;
+                                                    var userId = User.FindFirst("UId").Value;
+                                                    temporaryUserRoleDto.UserId = userId;
                                                     temporaryUserRoleDto.Active = true;
                                                     temporaryUserRoleDto.Role = temporaryUserRoleModel.Role;
                                                     temporaryUserRoleDto.TargetUserId = targetUserId;
