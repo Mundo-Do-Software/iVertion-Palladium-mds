@@ -81,6 +81,7 @@ namespace iVertion.Infra.IoC
             services.AddScoped<IUserProfileService, UserProfileService>();
             services.AddScoped<IRoleProfileService, RoleProfileService>();
             services.AddScoped<IAdditionalUserRoleService, AdditionalUserRoleService>();
+            services.AddScoped<ITemporaryUserRoleService, TemporaryUserRoleService>();
 
             // AutoMapper for DTOs
             services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
