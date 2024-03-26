@@ -43,6 +43,7 @@ namespace iVertion.WebApi.Controllers
         /// <param name="userProfileService"></param>
         /// <param name="roleProfileService"></param>
         /// <param name="additionalUserRoleService"></param>
+        /// <param name="temporaryUserRoleService"></param>
         public TokenController(IAuthenticate authentication,
                                IConfiguration configuration,
                                IUserInterface<ApplicationUser> userService,
