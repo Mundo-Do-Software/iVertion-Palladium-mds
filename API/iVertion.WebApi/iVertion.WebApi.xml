@@ -67,6 +67,7 @@
             <param name="userProfileService"></param>
             <param name="roleProfileService"></param>
             <param name="additionalUserRoleService"></param>
+            <param name="temporaryUserRoleService"></param>
         </member>
         <member name="M:iVertion.WebApi.Controllers.TokenController.ValidateToken">
             <summary>
