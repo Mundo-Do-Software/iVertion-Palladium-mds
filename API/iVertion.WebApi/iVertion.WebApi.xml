@@ -175,6 +175,13 @@
             <param name="additionalUserRoleModel"></param>
             <returns></returns>
         </member>
+        <member name="M:iVertion.WebApi.Controllers.UserController.GetTemporaryUserRolesAsync(iVertion.Domain.FiltersDb.TemporaryUserRoleFilterDb)">
+            <summary>
+            Returns an array of temporary user roles.
+            </summary>
+            <param name="temporaryUserRoleFilterDb"></param>
+            <returns></returns>
+        </member>
         <member name="M:iVertion.WebApi.Controllers.UserController.AddTemporaryUserRoleAsync(iVertion.WebApi.Models.TemporaryUserRoleModel)">
             <summary>
             Adds a new temporary user role.
