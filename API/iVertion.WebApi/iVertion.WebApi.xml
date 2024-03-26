@@ -57,7 +57,7 @@
             Token
             </summary>
         </member>
-        <member name="M:iVertion.WebApi.Controllers.TokenController.#ctor(iVertion.Domain.Account.IAuthenticate,Microsoft.Extensions.Configuration.IConfiguration,iVertion.Domain.Account.IUserInterface{iVertion.Infra.Data.Identity.ApplicationUser},iVertion.Application.Interfaces.IUserProfileService,iVertion.Application.Interfaces.IRoleProfileService,iVertion.Application.Interfaces.IAdditionalUserRoleService)">
+        <member name="M:iVertion.WebApi.Controllers.TokenController.#ctor(iVertion.Domain.Account.IAuthenticate,Microsoft.Extensions.Configuration.IConfiguration,iVertion.Domain.Account.IUserInterface{iVertion.Infra.Data.Identity.ApplicationUser},iVertion.Application.Interfaces.IUserProfileService,iVertion.Application.Interfaces.IRoleProfileService,iVertion.Application.Interfaces.IAdditionalUserRoleService,iVertion.Application.Interfaces.ITemporaryUserRoleService)">
             <summary>
             Contructor.
             </summary>
