@@ -429,6 +429,20 @@ namespace iVertion.WebApi.Controllers
             return BadRequest("Role is not be null or empty");
         }
         /// <summary>
+        /// Returns an array of temporary user roles.
+        /// </summary>
+        /// <param name="temporaryUserRoleFilterDb"></param>
+        /// <returns></returns>
+        [HttpGet("TemporaryUserRole")]
+        [Authorize(Roles = "AddToRole")]
+        public async Task<ActionResult> GetTemporaryUserRolesAsync([FromQuery] TemporaryUserRoleFilterDb temporaryUserRoleFilterDb){
+            var result = await _temporaryUserRoleService.GetTemporaryUserRolesAsync(temporaryUserRoleFilterDb);
+            if (result.IsSuccess)
+                return Ok(result);
+
+            return BadRequest(result);
+        }
+        /// <summary>
         /// Adds a new temporary user role.
         /// </summary>
         /// <param name="temporaryUserRoleModel"></param>
