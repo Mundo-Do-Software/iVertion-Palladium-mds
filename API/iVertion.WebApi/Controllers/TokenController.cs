@@ -33,6 +33,7 @@ namespace iVertion.WebApi.Controllers
         private readonly IUserProfileService _userProfileService;
         private readonly IRoleProfileService _roleProfileService;
         private readonly IAdditionalUserRoleService _additionalUserRoleService;
+        private readonly ITemporaryUserRoleService _temporaryUserRoleService;
         /// <summary>
         /// Contructor.
         /// </summary>
@@ -47,7 +48,9 @@ namespace iVertion.WebApi.Controllers
                                IUserInterface<ApplicationUser> userService,
                                IUserProfileService userProfileService,
                                IRoleProfileService roleProfileService,
-                               IAdditionalUserRoleService additionalUserRoleService)
+                               IAdditionalUserRoleService additionalUserRoleService,
+                               ITemporaryUserRoleService temporaryUserRoleService
+                               )
         {
             _authentication = authentication ??
                 throw new ArgumentNullException(nameof(authentication));
@@ -61,6 +64,8 @@ namespace iVertion.WebApi.Controllers
                 throw new ArgumentNullException(nameof(roleProfileService));
             _additionalUserRoleService = additionalUserRoleService ??
                 throw new ArgumentNullException(nameof(additionalUserRoleService));
+            _temporaryUserRoleService = temporaryUserRoleService ??
+                throw new ArgumentNullException(nameof(temporaryUserRoleService));
         }
         /// <summary>
         /// Validate the token
@@ -104,30 +109,43 @@ namespace iVertion.WebApi.Controllers
 
         private async Task<List<string>> GetAllUserRolesAsync(int userProfileId, string targetUserId){
             var roleProfileFilterdb = new RoleProfileFilterDb(){
-            UserProfileId = userProfileId,
-            PageSize = 10000, 
-            OrderByProperty = "Id", 
-            Page=1, 
-            Role= null, 
-            UserId=null
+                UserProfileId = userProfileId,
+                PageSize = 10000, 
+                OrderByProperty = "Id", 
+                Page=1, 
+                Role= null, 
+                UserId=null
             };
             var rolesProfiles = await _roleProfileService.GetRoleProfilesAsync(roleProfileFilterdb);
             var additionalUserRolesFilterDb = new AdditionalUserRoleFilterDb(){
-            TargetUserId = targetUserId,
-            PageSize = 10000, 
-            OrderByProperty = "Id", 
-            Page=1, 
-            Role=null, 
-            UserId=null
+                TargetUserId = targetUserId,
+                PageSize = 10000, 
+                OrderByProperty = "Id", 
+                Page=1, 
+                Role=null, 
+                UserId=null
             };
             var additionalUserRoles = await _additionalUserRoleService.GetAdditionalUserRolesAsync(additionalUserRolesFilterDb);
+            var temporaryUserRoleFilterDb = new TemporaryUserRoleFilterDb(){
+                TargetUserId = targetUserId,
+                PageSize = 10000, 
+                OrderByProperty = "Id", 
+                Page=1, 
+                Role=null, 
+                UserId=null,
+                StartDate=DateTime.Now,
+                ExpirationDate=DateTime.Now
+            };
             
-
+            var temporaryUserRoles = await _temporaryUserRoleService.GetTemporaryUserRolesAsync(temporaryUserRoleFilterDb);
             var roleModel = new List<string>();
             foreach(var role in rolesProfiles.Data.Data){
                 roleModel.Add(role.Role);
             }
             foreach(var role in additionalUserRoles.Data.Data){
+                roleModel.Add(role.Role);
+            }
+            foreach(var role in temporaryUserRoles.Data.Data){
                 roleModel.Add(role.Role);
             }
             return roleModel;
