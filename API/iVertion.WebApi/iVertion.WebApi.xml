@@ -161,6 +161,13 @@
             <param name="roleProfileFilterDb"></param>
             <returns></returns>
         </member>
+        <member name="M:iVertion.WebApi.Controllers.UserController.GetAdditionalUserRolesAsync(iVertion.Domain.FiltersDb.AdditionalUserRoleFilterDb)">
+            <summary>
+            Returns an array of additional user roles.
+            </summary>
+            <param name="additionalUserRoleFilterDb"></param>
+            <returns></returns>
+        </member>
         <member name="M:iVertion.WebApi.Controllers.UserController.AddAddtionalUserRoleAsync(iVertion.WebApi.Models.AdditionalUserRoleModel)">
             <summary>
             Adds an additional role to a user beyond the role profile they belong to.

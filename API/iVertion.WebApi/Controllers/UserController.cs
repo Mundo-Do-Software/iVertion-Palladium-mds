@@ -297,6 +297,22 @@ namespace iVertion.WebApi.Controllers
             return BadRequest(result);
         }
         /// <summary>
+        /// Returns an array of additional user roles.
+        /// </summary>
+        /// <param name="additionalUserRoleFilterDb"></param>
+        /// <returns></returns>
+        [HttpGet("AdditionalUserRole")]
+        [Authorize(Roles = "AddToRole")]
+        public async Task<ActionResult> GetAdditionalUserRolesAsync([FromQuery] AdditionalUserRoleFilterDb additionalUserRoleFilterDb){
+            var result = await _additionalUserRoleService.GetAdditionalUserRolesAsync(additionalUserRoleFilterDb);
+            if (result.Data == null)
+                return NotFound();
+            if (result.IsSuccess){
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+        /// <summary>
         /// Adds an additional role to a user beyond the role profile they belong to.
         /// </summary>
         /// <param name="additionalUserRoleModel"></param>
