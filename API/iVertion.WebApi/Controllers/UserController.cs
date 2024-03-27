@@ -474,7 +474,7 @@ namespace iVertion.WebApi.Controllers
             return BadRequest(result);
         }
         /// <summary>
-        /// Returns an temporary user role by its id.
+        /// Returns a temporary user role by its id.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>

@@ -198,7 +198,7 @@
         </member>
         <member name="M:iVertion.WebApi.Controllers.UserController.GetTemporaryUserRoleByIdAsync(System.Int32)">
             <summary>
-            Returns an temporary user role by its id.
+            Returns a temporary user role by its id.
             </summary>
             <param name="id"></param>
             <returns></returns>
