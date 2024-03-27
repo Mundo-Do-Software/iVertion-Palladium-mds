@@ -313,6 +313,21 @@ namespace iVertion.WebApi.Controllers
             return BadRequest(result);
         }
         /// <summary>
+        /// Returns an additional user role by its id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("AdditionalUserRole/{id}")]
+        [Authorize(Roles = "AddToRole")]
+        public async Task<ActionResult> GetAdditionalUserRoleByIdAsync(int id){
+            var additionalUserRole = await _additionalUserRoleService.GetAdditionalUserRoleByIdAsync(id);
+            if (additionalUserRole.Data == null){
+                return NotFound($@"Unable to find additional user role with id {id}.");
+            } else {
+                return Ok(additionalUserRole);
+            }
+        }
+        /// <summary>
         /// Adds an additional role to a user beyond the role profile they belong to.
         /// </summary>
         /// <param name="additionalUserRoleModel"></param>
