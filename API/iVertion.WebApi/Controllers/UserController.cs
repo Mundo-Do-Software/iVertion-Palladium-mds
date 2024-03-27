@@ -474,6 +474,21 @@ namespace iVertion.WebApi.Controllers
             return BadRequest(result);
         }
         /// <summary>
+        /// Returns a temporary user role by its id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("TemporaryUserRole/{id}")]
+        [Authorize(Roles = "AddToRole")]
+        public async Task<ActionResult> GetTemporaryUserRoleByIdAsync(int id){
+            var temporaryUserRole = await _temporaryUserRoleService.GetTemporaryUserRoleByIdAsync(id);
+            if (temporaryUserRole.Data == null){
+                return NotFound($@"Unable to find temporary user role with id {id}.");
+            } else {
+                return Ok(temporaryUserRole);
+            }
+        }
+        /// <summary>
         /// Adds a new temporary user role.
         /// </summary>
         /// <param name="temporaryUserRoleModel"></param>
