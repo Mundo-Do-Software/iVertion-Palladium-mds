@@ -608,6 +608,44 @@ namespace iVertion.WebApi.Controllers
             return BadRequest("Role cannot be null or empty.");
         }
         /// <summary>
+        /// Updates the start and expiration dates of a temporary user role.
+        /// </summary>
+        /// <param name="editTemporaryUserRoleModel"></param>
+        /// <returns></returns>
+        [HttpPatch("TemporaryUserRole")]
+        [Authorize(Roles = "AddToRole")]
+        public async Task<ActionResult> UpdateTemporaryUserRoleAsync([FromBody] EditTemporaryUserRoleModel editTemporaryUserRoleModel){
+            var temporaryUserRole = await _temporaryUserRoleService.GetTemporaryUserRoleByIdAsync(editTemporaryUserRoleModel.Id);
+            try
+            {
+                var result = temporaryUserRole.IsSuccess;
+                if (editTemporaryUserRoleModel.StartDate > temporaryUserRole.Data.CreatedAt){
+                    if (editTemporaryUserRoleModel.ExpirationDate > editTemporaryUserRoleModel.StartDate){
+                        var temporaryUserRoleDto = new TemporaryUserRoleDTO(){
+                            Id = temporaryUserRole.Data.Id,
+                            Active = temporaryUserRole.Data.Active,
+                            CreatedAt = temporaryUserRole.Data.CreatedAt,
+                            UpdatedAt = DateTime.Now,
+                            Role = temporaryUserRole.Data.Role,
+                            TargetUserId = temporaryUserRole.Data.TargetUserId,
+                            StartDate = editTemporaryUserRoleModel.StartDate,
+                            ExpirationDate = editTemporaryUserRoleModel.ExpirationDate
+                        };
+                        // Action
+                        await _temporaryUserRoleService.UpdateTemporaryUserRoleAsync(temporaryUserRoleDto);
+                        return Ok(temporaryUserRoleDto);
+                        // Action End
+                    }
+                    return BadRequest("The expiration date must be greater than the start date.");
+                }
+                return BadRequest("The start date must be greater than the created date");
+            }
+            catch
+            {
+                return NotFound($@"We did not find the temporary user role with id {editTemporaryUserRoleModel.Id}.");
+            }
+        }
+        /// <summary>
         /// Removes a temporary role from a user.
         /// </summary>
         /// <param name="removeTemporaryUserRoleModel"></param>

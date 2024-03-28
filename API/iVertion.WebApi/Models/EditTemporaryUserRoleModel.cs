@@ -12,15 +12,6 @@ namespace iVertion.WebApi.Models
         /// <value></value>
         public int Id { get; set; }
         /// <summary>
-        /// A role registered in the Identity roles.
-        /// </summary>
-        public string? Role { get; set; }
-
-        /// <summary>
-        /// An existing username on Identity.
-        /// </summary>
-        public string? UserName { get; set; }
-        /// <summary>
         /// The start date of the temporary user role.
         /// </summary>
         /// <value></value>
