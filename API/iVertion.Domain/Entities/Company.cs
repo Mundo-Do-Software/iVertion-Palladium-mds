@@ -1,12 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace iVertion.Domain.Entities
 {
-    public class Company
+    public class Company : Entity
     {
-        
+        public string? Name { get; private set; }
+        public string? Cnpj { get; private set; }
+        public string? StateRegistration { get; private set; }
+        public string? BusinesLicense { get; private set; }
     }
 }
