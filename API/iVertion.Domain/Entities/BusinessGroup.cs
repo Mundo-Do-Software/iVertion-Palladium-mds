@@ -8,6 +8,31 @@ namespace iVertion.Domain.Entities
         public string? Name { get; private set; }
         public IEnumerable<Company>? Companies { get; set; }
 
+        public BusinessGroup(string name,
+                             bool active)
+        {
+            ValidationDomain(name);
+            Active = active;
+
+        }
+        public BusinessGroup(int id,
+                             string name,
+                             bool active)
+        {
+            DomainExceptionValidation.When(id <= 0,
+                                           "Invalid Id, must be up to zero.");
+            ValidationDomain(name);
+            Active = active;
+
+        }
+        public void Update(string name,
+                           bool active)
+        {
+            ValidationDomain(name);
+            Active = active;
+
+        }
+
         private void ValidationDomain(string? name)
         {
             DomainExceptionValidation.When(String.IsNullOrEmpty(name),
