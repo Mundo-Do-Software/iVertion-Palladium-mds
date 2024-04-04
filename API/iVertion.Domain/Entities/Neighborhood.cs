@@ -3,52 +3,51 @@ using iVertion.Domain.Validation;
 
 namespace iVertion.Domain.Entities
 {
-    public class City : Entity
+    public class Neighborhood : Entity
     {
         public string? Name { get; private set; }
         public int Code { get; private set; }
-        public int StateId { get; private set; }
-        public State? State { get; set; }
-        public IEnumerable<Neighborhood>? Neighborhoods { get; set; }
+        public int CityId { get; private set; }
+        public City? City { get; set; }
         public IEnumerable<Address>? Addresses { get; set; }
 
-        public City(string name,
-                    int code,
-                    int stateId,
-                    bool active)
+        public Neighborhood(string name,
+                            int code,
+                            int cityId,
+                            bool active)
         {
             ValidationDomain(name,
                              code,
-                             stateId);
+                             cityId);
             Active = active;            
         }
-        public City(int id,
-                    string name,
-                    int code,
-                    int stateId,
-                    bool active)
+        public Neighborhood(int id,
+                            string name,
+                            int code,
+                            int cityId,
+                            bool active)
         {
             DomainExceptionValidation.When(id <= 0,
                                            "Invalid Id, must be up to zero.");
             ValidationDomain(name,
                              code,
-                             stateId);
+                             cityId);
             Id      = id;
             Active  = active;            
         }
         public void Update(string name,
                            int code,
-                           int stateId,
+                           int cityId,
                            bool active)
         {
             ValidationDomain(name,
                              code,
-                             stateId);
+                             cityId);
             Active = active;            
         }
         private void ValidationDomain(string name,
                                       int code,
-                                      int stateId)
+                                      int cityId)
         {
             DomainExceptionValidation.When(String.IsNullOrEmpty(name),
                                            "Name cannot be null or empty.");
@@ -58,11 +57,11 @@ namespace iVertion.Domain.Entities
                                            "Name must have a maximum of 150 characters.");
             DomainExceptionValidation.When(code <= 0,
                                            "Invalid Code, must be up to zero.");
-            DomainExceptionValidation.When(stateId <= 0,
-                                           "Invalid State Id, must be up to zero.");
+            DomainExceptionValidation.When(cityId <= 0,
+                                           "Invalid City Id, must be up to zero.");
             Name        = name;
             Code        = code;
-            StateId     = stateId;
+            CityId   = cityId;
         }
     }
 }
