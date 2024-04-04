@@ -10,6 +10,7 @@ namespace iVertion.Domain.Entities
         public int Code { get; private set; }
         public int CountryId { get; private set; }
         public Country? Country { get; set; }
+        public IEnumerable<City>? Cities { get; set; }
         public IEnumerable<Address>? Addresses { get; set; }
 
         public State(string name,
