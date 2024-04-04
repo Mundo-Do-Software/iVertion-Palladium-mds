@@ -61,7 +61,7 @@ namespace iVertion.Domain.Entities
                                            "Invalid City Id, must be up to zero.");
             Name        = name;
             Code        = code;
-            CityId   = cityId;
+            CityId      = cityId;
         }
     }
 }
