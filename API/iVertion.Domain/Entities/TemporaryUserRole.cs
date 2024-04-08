@@ -51,8 +51,8 @@ namespace iVertion.Domain.Entities
             Active = active;
         }
 
-        private void ValidationDomain(string? role,
-                                      string? targetUserId,
+        private void ValidationDomain(string role,
+                                      string targetUserId,
                                       DateTime startDate,
                                       DateTime expirationDate)
         {
