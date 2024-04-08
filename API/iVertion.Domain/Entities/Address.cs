@@ -20,6 +20,71 @@ namespace iVertion.Domain.Entities
 
         public List<CompanyAddress>? CompanyAddresses { get; set; }
 
+        public Address(string zipCode,
+                       string street,
+                       string number,
+                       string complement,
+                       int neighborhoodId,
+                       int cityId,
+                       int stateId,
+                       int countryId,
+                       bool active)
+        {
+            ValidationDomain(zipCode,
+                             street,
+                             number,
+                             complement,
+                             neighborhoodId,
+                             cityId,
+                             stateId,
+                             countryId);
+            Active  = active;
+        }
+        public Address(int id,
+                       string zipCode,
+                       string street,
+                       string number,
+                       string complement,
+                       int neighborhoodId,
+                       int cityId,
+                       int stateId,
+                       int countryId,
+                       bool active)
+        {
+            DomainExceptionValidation.When(id < 0,
+                                           "Invalid Id, must be up to zero.");
+            ValidationDomain(zipCode,
+                             street,
+                             number,
+                             complement,
+                             neighborhoodId,
+                             cityId,
+                             stateId,
+                             countryId);
+            Id      = id;                             
+            Active  = active;
+        }
+        public void Update(string zipCode,
+                           string street,
+                           string number,
+                           string complement,
+                           int neighborhoodId,
+                           int cityId,
+                           int stateId,
+                           int countryId,
+                           bool active)
+        {
+            ValidationDomain(zipCode,
+                             street,
+                             number,
+                             complement,
+                             neighborhoodId,
+                             cityId,
+                             stateId,
+                             countryId);
+            Active  = active;
+        }
+
         private void ValidationDomain(string zipCode,
                                       string street,
                                       string number,
