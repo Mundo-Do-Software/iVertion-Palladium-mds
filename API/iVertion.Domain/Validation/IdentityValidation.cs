@@ -40,5 +40,48 @@ namespace iVertion.Domain.Validation
 			digit = digit + rest.ToString();
 			return cnpj.EndsWith(digit);            
         }
+        public static bool ValidarCpf(string cpf)
+        {
+        cpf = cpf.Trim().Replace(".", "").Replace("-", "");
+
+        if (cpf.Length != 11)
+        {
+            return false;
+        }
+        for (int i = 1; i < cpf.Length; i++)
+        {
+            if (cpf[i] != cpf[0])
+            {
+            break;
+            }
+
+            if (i == cpf.Length - 1)
+            {
+            return false;
+            }
+        }
+        int[] multiplier1 = new int[] { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
+        int[] multiplier2 = new int[] { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
+
+        int sum1 = 0;
+        for (int i = 0; i < 9; i++)
+        {
+            sum1 += int.Parse(cpf[i].ToString()) * multiplier1[i];
+        }
+
+        int rest1 = sum1 % 11;
+        int digit1 = rest1 < 2 ? 0 : 11 - rest1;
+
+        int sum2 = 0;
+        for (int i = 0; i < 10; i++)
+        {
+            sum2 += int.Parse(cpf[i].ToString()) * multiplier2[i];
+        }
+
+        int rest2 = sum2 % 11;
+        int digit2 = rest2 < 2 ? 0 : 11 - rest2;
+
+        return cpf.Equals(cpf.Substring(0, 9) + digit1.ToString() + digit2.ToString());
+        }
     }
 }
