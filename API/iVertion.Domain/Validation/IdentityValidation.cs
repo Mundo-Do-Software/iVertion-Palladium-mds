@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace iVertion.Domain.Validation
 {
@@ -40,7 +37,7 @@ namespace iVertion.Domain.Validation
 			digit = digit + rest.ToString();
 			return cnpj.EndsWith(digit);            
         }
-        public static bool ValidarCpf(string cpf)
+        public static bool ValidateCpf(string cpf)
         {
         cpf = cpf.Trim().Replace(".", "").Replace("-", "");
 
@@ -82,6 +79,27 @@ namespace iVertion.Domain.Validation
         int digit2 = rest2 < 2 ? 0 : 11 - rest2;
 
         return cpf.Equals(cpf.Substring(0, 9) + digit1.ToString() + digit2.ToString());
+        }
+        public static bool ValidatePisPasep(string number)
+        {
+        // Validate the number structure
+        if (!Regex.IsMatch(number, "^[1-4]\\d{9}\\d$"))
+        {
+            return false;
+        }
+
+        // Calculate the check digit
+        int sum = 0;
+        for (int i = 0; i < 10; i++)
+        {
+            sum += int.Parse(number[i].ToString()) * (10 - i);
+        }
+
+        int remainder = sum % 11;
+        int checkDigit = remainder < 2 ? 0 : 11 - remainder;
+
+        // Compare the calculated check digit with the digit in the number
+        return checkDigit == int.Parse(number[10].ToString());
         }
     }
 }
