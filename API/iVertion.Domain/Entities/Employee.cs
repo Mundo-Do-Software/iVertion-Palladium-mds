@@ -57,7 +57,7 @@ namespace iVertion.Domain.Entities
         public IEnumerable<Vacation>? Vacations { get; set; }
         public IEnumerable<CheckPoint>? CheckPoints { get; set; }
         public IEnumerable<Document>? Documents { get; set; }
-        public IEnumerable<Occurrences>? Occurrences { get; set; }
+        public IEnumerable<Occurrence>? Occurrences { get; set; }
         public IEnumerable<Payroll>? Payrolls { get; set; }
         public IEnumerable<Dependent>? Dependents { get; set; }
         public IEnumerable<MedicalExam>? MedicalExams { get; set; }
