@@ -14,6 +14,7 @@ namespace iVertion.Domain.Entities
         public string? Series { get; private set; }
         public string? Rg { get; private set; }
         public string? Cnh { get; private set; }
+        public string? VoterRegistration { get; private set; }
 
         // Dates of birth and admission.
         public DateOnly Birthday { get; private set; }
