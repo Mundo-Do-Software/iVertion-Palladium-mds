@@ -1,4 +1,6 @@
 
+using iVertion.Domain.Validation;
+
 namespace iVertion.Domain.Entities
 {
     public sealed class Employee : Entity
@@ -15,6 +17,8 @@ namespace iVertion.Domain.Entities
         public string? Rg { get; private set; }
         public string? Cnh { get; private set; }
         public string? VoterRegistration { get; private set; }
+        public string? ElectoralZone { get; private set; }
+        public string? ElectoraSection { get; private set; }
 
         // Dates of birth and admission.
         public DateOnly Birthday { get; private set; }
@@ -62,5 +66,95 @@ namespace iVertion.Domain.Entities
         public IEnumerable<Payroll>? Payrolls { get; set; }
         public IEnumerable<Dependent>? Dependents { get; set; }
         public IEnumerable<MedicalExam>? MedicalExams { get; set; }
+
+        private void ValidationDomain(string firstName,
+                                      string lastName,
+                                      string nameInitials,
+                                      string socialName,
+                                      string cpf,
+                                      string pis,
+                                      string ctps,
+                                      string series,
+                                      string rg,
+                                      string cnh,
+                                      string voterRegistration,
+                                      string electoralZone,
+                                      string electoralSection,
+                                      DateOnly bithday,
+                                      DateOnly admissionDate,
+                                      DateOnly resignationDate,
+                                      int genderId,
+                                      int civilStatusId,
+                                      int departmentId,
+                                      int levelId,
+                                      int professionId,
+                                      int remunerationId,
+                                      int workModelId)
+        {
+            DateTime datenow = DateTime.Now;
+            DateOnly dateonlynow = new DateOnly(datenow.Year, datenow.Month, datenow.Day);
+            DomainExceptionValidation.When(String.IsNullOrEmpty(firstName),
+                                           "Invalid First Name, not be null or empty.");
+            DomainExceptionValidation.When(firstName.Length < 2,
+                                           "Invalid First Name, to short, minimum 2 characters.");
+            DomainExceptionValidation.When(firstName.Length > 40,
+                                           "Invalid First Name, to long, max 40 characters.");
+            DomainExceptionValidation.When(String.IsNullOrEmpty(lastName),
+                                           "Invalid Last Name, not be null or empty.");
+            DomainExceptionValidation.When(lastName.Length < 2,
+                                           "Invalid Last Name, to short, minimum 2 characters.");
+            DomainExceptionValidation.When(lastName.Length > 255,
+                                           "Invalid Last Name, to long, max 255 characters.");
+            DomainExceptionValidation.When(String.IsNullOrEmpty(nameInitials),
+                                           "Invalid Name Initials, not be null or empty.");
+            DomainExceptionValidation.When(nameInitials.Length < 2,
+                                           "Invalid Name Initials, to short, minimum 2 characters.");
+            DomainExceptionValidation.When(nameInitials.Length > 10,
+                                           "Invalid Name Initials, to long, max 10 characters.");
+            DomainExceptionValidation.When(String.IsNullOrEmpty(socialName),
+                                           "Invalid Social Name, not be null or empty.");
+            DomainExceptionValidation.When(socialName.Length < 2,
+                                           "Invalid Social Name, to short, minimum 2 characters.");
+            DomainExceptionValidation.When(socialName.Length > 40,
+                                           "Invalid Social Name, to long, max 40 characters.");
+            DomainExceptionValidation.When(!IdentityValidation.ValidateCpf(cpf),
+                                           "Invalid CPF.");
+            DomainExceptionValidation.When(!IdentityValidation.ValidatePisPasep(pis),
+                                           "Invalid PIS - PASEP.");
+            DomainExceptionValidation.When(String.IsNullOrEmpty(ctps),
+                                           "Invalid Ctps, not be null or empty.");
+            DomainExceptionValidation.When(ctps.Length < 7 || ctps.Length > 7,
+                                           "Invalid Ctps, must be 7 caracters.");
+            DomainExceptionValidation.When(String.IsNullOrEmpty(series),
+                                           "Invalid Series, not be null or empty.");
+            DomainExceptionValidation.When(series.Length < 1 || series.Length > 4,
+                                           "Invalid Series, minimum 1 and max 4 caracters.");
+            DomainExceptionValidation.When(!IdentityValidation.ValidateRgNumber(rg),
+                                           "Invalid Identity Document.");
+            DomainExceptionValidation.When(!IdentityValidation.ValidateCnhNumber(cnh),
+                                           "Invalid driver's license.");
+            DomainExceptionValidation.When(!IdentityValidation.ValidateVoterRegistration(voterRegistration, electoralZone, electoralSection),
+                                           "Invalid voter registration card.");
+            DomainExceptionValidation.When(bithday < dateonlynow,
+                                           "Invalid birth date, cannot be less than the current day.");
+            if(resignationDate != default(DateOnly)){
+                DomainExceptionValidation.When(admissionDate > resignationDate,
+                                               "The hire date cannot be greater than the dismissal date.");
+            DomainExceptionValidation.When(genderId <= 0,
+                                           "Invalid Gender Id, must be up to zero.");
+            DomainExceptionValidation.When(civilStatusId <= 0,
+                                           "Invalid Civil Status Id, must be up to zero.");
+            DomainExceptionValidation.When(departmentId <= 0,
+                                           "Invalid Department Id, must be up to zero.");
+            DomainExceptionValidation.When(levelId <= 0,
+                                           "Invalid Level Id, must be up to zero.");
+            DomainExceptionValidation.When(professionId <= 0,
+                                           "Invalid Profession Id, must be up to zero.");
+            DomainExceptionValidation.When(remunerationId <= 0,
+                                           "Invalid Remunaration Id, must be up to zero.");
+            DomainExceptionValidation.When(workModelId <= 0,
+                                           "Invalid Work Model Id, must be up to zero.");
+            }
+        }
     }
 }

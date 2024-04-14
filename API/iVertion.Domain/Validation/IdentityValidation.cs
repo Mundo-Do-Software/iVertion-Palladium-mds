@@ -101,5 +101,36 @@ namespace iVertion.Domain.Validation
         // Compare the calculated check digit with the digit in the number
         return checkDigit == int.Parse(number[10].ToString());
         }
+        public static bool ValidateRgNumber(string rg)
+        {
+            // Regular expression to validate the format of the RG number.
+            string pattern = @"^\d{8}(\d{1}|[Xx])$";
+
+            // Checks if the ID number matches the pattern.
+            return Regex.IsMatch(rg, pattern);
+        }
+        public static bool ValidateCnhNumber(string cnh)
+        {
+            // Regular expression to validate the format of the CNH number.
+            string pattern = @"^\d{9}\d{2}$";
+
+            // Checks if the driver's license number matches the pattern.
+            return Regex.IsMatch(cnh, pattern);
+        }
+        public static bool ValidateVoterRegistration(string voterRegistration, string electoralZone, string electoralSection)
+        {
+            // Regular expression to validate the format of the Voter ID number.
+            string pattern = @"^\d{10}$";
+
+            // Checks if the Voter ID number matches the pattern.
+            bool isValidVoterRegistration = Regex.IsMatch(voterRegistration, pattern);
+
+            // Check if the other information is filled in.
+            bool isValidElectoralZone = !string.IsNullOrEmpty(electoralZone);
+            bool isValidElectoralSection = !string.IsNullOrEmpty(electoralSection);
+
+            // Returns true if all validations are successful.
+            return isValidVoterRegistration && isValidElectoralZone && isValidElectoralSection;
+        }
     }
 }
