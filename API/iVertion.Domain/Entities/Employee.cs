@@ -33,6 +33,7 @@ namespace iVertion.Domain.Entities
         public int ProfessionId { get; private set; }
         public int RemunerationId { get; private set; }
         public int WorkModelId { get; private set; }
+        public int? MedicalRecordId { get; private set; }
 
         // Emergency contact properties.
         public string? EmergencyContactName { get; private set; }
@@ -89,7 +90,11 @@ namespace iVertion.Domain.Entities
                                       int levelId,
                                       int professionId,
                                       int remunerationId,
-                                      int workModelId)
+                                      int workModelId,
+                                      int? medicalRecordId,
+                                      string? emergencyContactName,
+                                      string? emergencyContactPhoneNumber,
+                                      string? targetUserId)
         {
             DateTime datenow = DateTime.Now;
             DateOnly dateonlynow = new DateOnly(datenow.Year, datenow.Month, datenow.Day);
@@ -140,6 +145,7 @@ namespace iVertion.Domain.Entities
             if(resignationDate != default(DateOnly)){
                 DomainExceptionValidation.When(admissionDate > resignationDate,
                                                "The hire date cannot be greater than the dismissal date.");
+            }
             DomainExceptionValidation.When(genderId <= 0,
                                            "Invalid Gender Id, must be up to zero.");
             DomainExceptionValidation.When(civilStatusId <= 0,
@@ -154,7 +160,34 @@ namespace iVertion.Domain.Entities
                                            "Invalid Remunaration Id, must be up to zero.");
             DomainExceptionValidation.When(workModelId <= 0,
                                            "Invalid Work Model Id, must be up to zero.");
+            if(medicalRecordId != null){
+                DomainExceptionValidation.When(medicalRecordId <= 0,
+                                            "Invalid Work Model Id, must be up to zero.");
             }
+
+            FirstName                   = firstName;
+            LastName                    = lastName;
+            NameInitials                = nameInitials;
+            SocialName                  = socialName;
+            Cpf                         = cpf;
+            Pis                         = pis;
+            Ctps                        = ctps;
+            Series                      = series;
+            Rg                          = rg;
+            Cnh                         = cnh;
+            VoterRegistration           = voterRegistration;
+            ElectoralZone               = electoralZone;
+            ElectoraSection             = electoralSection;
+            Birthday                    = bithday;
+            AdmissionDate               = admissionDate;
+            ResignationDate             = resignationDate;
+            GenderId                    = genderId;
+            CivilStatusId               = civilStatusId;
+            DepartmentId                = departmentId;
+            MedicalRecordId             = medicalRecordId;
+            EmergencyContactName        = emergencyContactName;
+            EmergencyContactPhoneNumber = emergencyContactPhoneNumber;
+            TargetUserId                = targetUserId;
         }
     }
 }
