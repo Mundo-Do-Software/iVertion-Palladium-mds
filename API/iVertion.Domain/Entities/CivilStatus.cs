@@ -3,7 +3,7 @@ using iVertion.Domain.Validation;
 
 namespace iVertion.Domain.Entities
 {
-    public class CivilStatus : Entity
+    public sealed class CivilStatus : Entity
     {
         public string? Description { get; private set; }
         public char Acronym { get; private set; }
