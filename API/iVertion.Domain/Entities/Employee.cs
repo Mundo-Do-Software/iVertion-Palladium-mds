@@ -31,7 +31,6 @@ namespace iVertion.Domain.Entities
         public int DepartmentId { get; private set; }
         public int LevelId { get; private set; }
         public int ProfessionId { get; private set; }
-        public int RemunerationId { get; private set; }
         public int WorkModelId { get; private set; }
         public int? MedicalRecordId { get; private set; }
 
@@ -48,11 +47,11 @@ namespace iVertion.Domain.Entities
         public Department? Department { get; set; }
         public Level? Level { get; set; }
         public Profession? Profession { get; set; }
-        public Remuneration? Remuneration { get; set; }
         public WorkModel? WorkModel { get; set; }
         public MedicalRecord? MedicalRecord { get; set; }
 
         // Collection relationship properties.
+        public IEnumerable<Remuneration>? Remunerations { get; set; }
         public List<EmployeeAddress>? EmployeeAddresses { get; set; }
         public IEnumerable<Skill>? Skills { get; set; }
         public List<EmployeeBenefit>? EmployeeBenefits { get; set; }
@@ -89,7 +88,6 @@ namespace iVertion.Domain.Entities
                         int departmentId,
                         int levelId,
                         int professionId,
-                        int remunerationId,
                         int workModelId,
                         int? medicalRecordId,
                         string? emergencyContactName,
@@ -117,8 +115,7 @@ namespace iVertion.Domain.Entities
                              civilStatusId,
                              departmentId,
                              levelId,
-                             professionId,
-                             remunerationId,
+                             professionId,                             
                              workModelId,
                              medicalRecordId,
                              emergencyContactName,
@@ -149,7 +146,6 @@ namespace iVertion.Domain.Entities
                         int departmentId,
                         int levelId,
                         int professionId,
-                        int remunerationId,
                         int workModelId,
                         int? medicalRecordId,
                         string? emergencyContactName,
@@ -179,8 +175,7 @@ namespace iVertion.Domain.Entities
                              civilStatusId,
                              departmentId,
                              levelId,
-                             professionId,
-                             remunerationId,
+                             professionId,                             
                              workModelId,
                              medicalRecordId,
                              emergencyContactName,
@@ -211,7 +206,6 @@ namespace iVertion.Domain.Entities
                            int departmentId,
                            int levelId,
                            int professionId,
-                           int remunerationId,
                            int workModelId,
                            int? medicalRecordId,
                            string? emergencyContactName,
@@ -239,8 +233,7 @@ namespace iVertion.Domain.Entities
                              civilStatusId,
                              departmentId,
                              levelId,
-                             professionId,
-                             remunerationId,
+                             professionId,                             
                              workModelId,
                              medicalRecordId,
                              emergencyContactName,
@@ -270,7 +263,6 @@ namespace iVertion.Domain.Entities
                                       int departmentId,
                                       int levelId,
                                       int professionId,
-                                      int remunerationId,
                                       int workModelId,
                                       int? medicalRecordId,
                                       string? emergencyContactName,
@@ -337,8 +329,6 @@ namespace iVertion.Domain.Entities
                                            "Invalid Level Id, must be up to zero.");
             DomainExceptionValidation.When(professionId <= 0,
                                            "Invalid Profession Id, must be up to zero.");
-            DomainExceptionValidation.When(remunerationId <= 0,
-                                           "Invalid Remunaration Id, must be up to zero.");
             DomainExceptionValidation.When(workModelId <= 0,
                                            "Invalid Work Model Id, must be up to zero.");
             if(medicalRecordId != null){
