@@ -80,7 +80,8 @@ namespace iVertion.Domain.Entities
                                       string? dietaryHabits,
                                       string? anthropometricMeasurements,
                                       string? occupationalRiskAssessment,
-                                      string? healthAndSafetyTraining)
+                                      string? healthAndSafetyTraining,
+                                      int employeId)
         {
             DomainExceptionValidation.When(lastMedicalExamDate == default,
                                             "Invalid Last Medical Exam Date, must be specified.");
@@ -142,6 +143,8 @@ namespace iVertion.Domain.Entities
                                             "Invalid Occupational Risk Assessment length, maximum 255 characters allowed.");
             DomainExceptionValidation.When(healthAndSafetyTraining?.Length > 255,
                                             "Invalid Health and Safety Training length, maximum 255 characters allowed.");
+            DomainExceptionValidation.When(employeId < 0,
+                                           "Invalid Employee Id, must be up to zero.");
             LastMedicalExamDate             = lastMedicalExamDate;
             LastMedicalExamResult           = lastMedicalExamResult;
             HasMedicalConditions            = hasMedicalConditions;
@@ -169,6 +172,7 @@ namespace iVertion.Domain.Entities
             AnthropometricMeasurements      = anthropometricMeasurements;
             OccupationalRiskAssessment      = occupationalRiskAssessment;
             HealthAndSafetyTraining         = healthAndSafetyTraining;
+            EmployeeId                      = employeId;
         }
     }
 }
