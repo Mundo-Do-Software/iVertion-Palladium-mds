@@ -8,8 +8,11 @@ namespace iVertion.Domain.Entities
         // Employee basic information
         public DateTime LastMedicalExamDate { get; private set; } // Date of the last medical exam
         public string? LastMedicalExamResult { get; private set; } // Result of the last medical exam
+        public bool HasMedicalConditions { get; private set; }
         public string? MedicalConditions { get; private set; } // Known medical conditions of the employee
+        public bool HasAllergies { get; private set; }
         public string? Allergies { get; private set; } // Known allergies of the employee
+        public bool UsesMedications { get; private set; }
         public string? Medications { get; private set; } // Medications in use by the employee
         public string? EmergencyContactName { get; private set; } // Name of the emergency contact
         public string? EmergencyContactPhoneNumber { get; private set; } // Phone number of the emergency contact
@@ -52,12 +55,15 @@ namespace iVertion.Domain.Entities
         public Employee? Employee { get; set; }
 
         private void ValidationDomain(DateTime lastMedicalExamDate,
-                                      string? lastMedicalExamResult,
+                                      string lastMedicalExamResult,
+                                      bool hasMedicalConditions,
                                       string? medicalConditions,
+                                      bool hasAllergies,
                                       string? allergies,
+                                      bool usesMedications,
                                       string? medications,
-                                      string? emergencyContactName,
-                                      string? emergencyContactPhoneNumber,
+                                      string emergencyContactName,
+                                      string emergencyContactPhoneNumber,
                                       bool hasPhysicalRestrictions,
                                       string? physicalRestrictionsDescription,
                                       bool hasMedicalLimitations,
@@ -78,14 +84,28 @@ namespace iVertion.Domain.Entities
         {
             DomainExceptionValidation.When(lastMedicalExamDate == default,
                                             "Invalid Last Medical Exam Date, must be specified.");
-            DomainExceptionValidation.When(lastMedicalExamResult?.Length < 1 || lastMedicalExamResult?.Length > 255,
+            DomainExceptionValidation.When(String.IsNullOrEmpty(lastMedicalExamResult),
+                                           "Invalid Last Medical Exam Result, must not be null or empty.");
+            DomainExceptionValidation.When(lastMedicalExamResult.Length < 1 || lastMedicalExamResult.Length > 255,
                                             "Invalid Last Medical Exam Result length, must be between 1 and 255 characters.");
-            DomainExceptionValidation.When(medicalConditions?.Length > 255,
-                                            "Invalid Medical Conditions length, maximum 255 characters allowed.");
-            DomainExceptionValidation.When(allergies?.Length > 255,
-                                            "Invalid Allergies length, maximum 255 characters allowed.");
-            DomainExceptionValidation.When(medications?.Length > 255,
-                                            "Invalid Medications length, maximum 255 characters allowed.");
+            if(hasMedicalConditions){
+                DomainExceptionValidation.When(String.IsNullOrEmpty(medicalConditions),
+                                               "Invalid Medical Conditions, must not be null or empty.");
+                DomainExceptionValidation.When(medicalConditions?.Length > 255,
+                                                "Invalid Medical Conditions length, maximum 255 characters allowed.");
+            }
+            if(hasAllergies){
+                DomainExceptionValidation.When(String.IsNullOrEmpty(allergies),
+                                               "Invalid Allergies, must not be null or empty.");
+                DomainExceptionValidation.When(allergies?.Length > 255,
+                                                "Invalid Allergies length, maximum 255 characters allowed.");
+            }
+            if(usesMedications){
+                DomainExceptionValidation.When(String.IsNullOrEmpty(medications),
+                                               "Invalid Medications, must not be null or empty.");
+                DomainExceptionValidation.When(medications?.Length > 255,
+                                                "Invalid Medications length, maximum 255 characters allowed.");
+            }
             DomainExceptionValidation.When(emergencyContactName?.Length < 1 || emergencyContactName?.Length > 255,
                                             "Invalid Emergency Contact Name length, must be between 1 and 255 characters.");
             DomainExceptionValidation.When(emergencyContactPhoneNumber?.Length < 1 || emergencyContactPhoneNumber?.Length > 20,
@@ -124,8 +144,11 @@ namespace iVertion.Domain.Entities
                                             "Invalid Health and Safety Training length, maximum 255 characters allowed.");
             LastMedicalExamDate             = lastMedicalExamDate;
             LastMedicalExamResult           = lastMedicalExamResult;
+            HasMedicalConditions            = hasMedicalConditions;
             MedicalConditions               = medicalConditions;
+            HasAllergies                    = hasAllergies;
             Allergies                       = allergies;
+            UsesMedications                 = usesMedications;
             Medications                     = medications;
             EmergencyContactName            = emergencyContactName;
             EmergencyContactPhoneNumber     = emergencyContactPhoneNumber;
