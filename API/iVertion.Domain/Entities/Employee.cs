@@ -53,7 +53,7 @@ namespace iVertion.Domain.Entities
         // Collection relationship properties.
         public IEnumerable<Remuneration>? Remunerations { get; set; }
         public List<EmployeeAddress>? EmployeeAddresses { get; set; }
-        public IEnumerable<Skill>? Skills { get; set; }
+        public IEnumerable<EmployeeSkill>? EmployeeSkills { get; set; }
         public List<EmployeeBenefit>? EmployeeBenefits { get; set; }
         public IEnumerable<EmployeeHistory>? EmployeeHistories { get; set; }
         public IEnumerable<EmployeePerformance>? EmployeePerformances { get; set; }
