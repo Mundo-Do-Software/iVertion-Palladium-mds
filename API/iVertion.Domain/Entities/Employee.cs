@@ -333,7 +333,7 @@ namespace iVertion.Domain.Entities
                                            "Invalid Work Model Id, must be up to zero.");
             if(medicalRecordId != null){
                 DomainExceptionValidation.When(medicalRecordId <= 0,
-                                            "Invalid Work Model Id, must be up to zero.");
+                                            "Invalid Medical Record Id, must be up to zero.");
             }
 
             FirstName                   = firstName;
