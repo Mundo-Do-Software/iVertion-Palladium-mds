@@ -1,7 +1,7 @@
 
 namespace iVertion.Domain.Entities
 {
-    public sealed class EmployeeQuestionAnswer : Entity
+    public sealed class PerformanceQuestion : Entity
     {
         
     }
